@@ -5,3 +5,5 @@ cpp/simple/Makefile
 cpp/simple/Simple
 cpp/simple/build/
 cpp/simple/.vscode/
+cpp/factorial/build/
+cpp/factorial/.vscode/

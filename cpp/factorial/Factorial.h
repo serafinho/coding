@@ -19,12 +19,12 @@ class Factorial
         /**
          *  Compute factorial recursively
          */
-        static unsigned long long int fact_recursive(const unsigned long long int n);
+        static unsigned long long int fact_recursive(const unsigned long long int n) noexcept;
 
         /**
          *  Compute factorial iteratively
          */
-        static unsigned long long int fact_iterative(const int n);
+        static unsigned long long int fact_iterative(const int n) noexcept;
 
 };
 
