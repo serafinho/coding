@@ -15,12 +15,12 @@ unsigned long long int Factorial::fact_recursive(const unsigned long long int n)
     return n*fact_recursive(n-1);
 }
 
-unsigned long long int Factorial::fact_iterative(const int n)
+unsigned long long int Factorial::fact_iterative(const int n) noexcept
 {
     unsigned long long int result = 1;
     for(int i=0; i<n; i++)
     {
-        result *= i+1;
+        result *= static_cast<long long int>(i)+1;
     }
     return result;
 }

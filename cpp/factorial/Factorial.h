@@ -1,7 +1,9 @@
 #ifndef __FACTORIAL_H__
 #define __FACTORIAL_H__
 
-
+/**
+* This class is used to compute factorials of integer numbers
+*/
 class Factorial 
 {
     public:
@@ -23,7 +25,7 @@ class Factorial
         /**
          *  Compute factorial iteratively
          */
-        static unsigned long long int fact_iterative(const int n);
+        static unsigned long long int fact_iterative(const int n) noexcept;
 
 };
 
