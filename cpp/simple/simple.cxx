@@ -71,6 +71,34 @@ list<int> removeDuplicates(const list<int> &input)
     return result;
 }
 
+
+/**
+* Check for correct prenthesis nesting
+*/
+bool parenthesisCorrect(const string& input)
+{
+    int counter = 0;
+    for (const char& c : input)
+    {
+        if (c == '(')
+        {
+            counter++;
+        }
+        else if (c == ')')
+        {
+            counter--;
+        }
+        if (counter < 0)
+        {
+            // We should never have more closed brackets than open 
+            // ones, so exit the loop if this should happen
+            break;
+        }
+    }
+
+    return counter == 0;
+}
+
 int main()
 {
 
@@ -87,6 +115,12 @@ int main()
     cout << "Output: ";
     printList(output);
 
+    const string s1 = "(())";
+    const string s2 = "()()";
+    const string s3 = ")(";
+    cout << "Checking " << s1 << ": " << parenthesisCorrect(s1) << endl;
+    cout << "Checking " << s2 << ": " << parenthesisCorrect(s2) << endl;
+    cout << "Checking " << s3 << ": " << parenthesisCorrect(s3) << endl;
 
     return 0;
 }
