@@ -2,51 +2,9 @@
 #include <string>
 #include <sstream>
 #include <exception>
+#include <list>
 
 using namespace std;
-
-
-/**
- *  Returns the factorial of a number
- */
-unsigned long long int fact_recursive(const int n)
-{
-    if(n==0)
-    {
-        return 1;
-    }
-    return n*fact_recursive(n-1);
-}
-
-/**
- *  Returns the factorial of a number
- */
-unsigned long long int fact_iterative(const int n)
-{
-    int result = 1;
-    for(int i=0; i<n; i++)
-    {
-        result *= i+1;
-    }
-    return result;
-}
-
-unsigned long long int fact(const int n, const bool recursive)
-{
-    if(n<0)
-    {
-        throw invalid_argument("Factorial for negative numbers are not defined...");
-    }
-
-    if(recursive)
-    {
-        return fact_recursive(n);
-    }
-    else
-    {
-        return fact_iterative(n);
-    }
-}
 
 /**
  * Print fizzbuzz numbers from children's game 
@@ -89,22 +47,17 @@ string reverseString(const string& input)
     return out.str();
 }
 
+
+/**
+ * Remove all duplicates from a list 
+ */
+list<int> removeDuplicates(const list<int> &input)
+{
+    
+}
+
 int main()
 {
-    cout << "Running simple tests...\n";
-    const int input = 5; 
-    cout << input << "! = " << fact(input, true) << endl;
-    cout << input << "! = " << fact(input, false) << endl;
-
-    try 
-    {
-        fact(-123, true);
-    }
-    catch(const invalid_argument &e)
-    {
-        cerr << e.what() << endl;
-    }
-
 
     runFizzBuzz();
 

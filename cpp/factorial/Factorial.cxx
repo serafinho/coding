@@ -6,7 +6,7 @@
 using namespace std;
 
 
-unsigned long long int Factorial::fact_recursive(const unsigned long long int n)
+unsigned long long int Factorial::fact_recursive(const unsigned long long int n) noexcept
 {
     if(n==0)
     {
