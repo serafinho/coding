@@ -5,3 +5,4 @@ project(Coding)
 
 add_subdirectory (simple)
 add_subdirectory (factorial)
+add_subdirectory (linkedlists)

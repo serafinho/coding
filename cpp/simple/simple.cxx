@@ -73,12 +73,12 @@ list<int> removeDuplicates(const list<int> &input)
 
 
 /**
-* Check for correct prenthesis nesting
+* Check for correct parentheses nesting
 */
-bool parenthesisCorrect(const string& input)
+bool parenthesesCorrect(const string& input)
 {
     int counter = 0;
-    for (const char& c : input)
+    for (auto c : input)
     {
         if (c == '(')
         {
@@ -118,9 +118,7 @@ int main()
     const string s1 = "(())";
     const string s2 = "()()";
     const string s3 = ")(";
-    cout << "Checking " << s1 << ": " << parenthesisCorrect(s1) << endl;
-    cout << "Checking " << s2 << ": " << parenthesisCorrect(s2) << endl;
-    cout << "Checking " << s3 << ": " << parenthesisCorrect(s3) << endl;
-
-    return 0;
+    cout << "Checking " << s1 << ": " << parenthesesCorrect(s1) << endl;
+    cout << "Checking " << s2 << ": " << parenthesesCorrect(s2) << endl;
+    cout << "Checking " << s3 << ": " << parenthesesCorrect(s3) << endl;
 }
