@@ -1,9 +1,2 @@
-cpp/simple/CMakeCache.txt
-cpp/simple/CMakeFiles/
-cpp/simple/cmake_install.cmake
-cpp/simple/Makefile
-cpp/simple/Simple
-cpp/simple/build/
-cpp/simple/.vscode/
-cpp/factorial/build/
-cpp/factorial/.vscode/
+cpp/build/
+

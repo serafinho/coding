@@ -4,4 +4,4 @@ cmake_minimum_required(VERSION 3.10)
 project(Factorial)
 
 # add the executable
-add_executable(Factorial test_factorial.cxx Factorial.h Factorial.cxx)
+add_executable(Simple simple.cxx)
