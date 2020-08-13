@@ -4,7 +4,7 @@
 #include <iostream>
 
 /**
-* This class manages a linked list 
+* This class manages a linked list element
 */
 template <class T>
 class ListElement

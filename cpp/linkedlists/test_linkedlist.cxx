@@ -1,4 +1,5 @@
-#include "LinkedList.h"
+#include "ListElement.h"
+#include "Stack.h"
 
 #include <iostream>
 
@@ -17,4 +18,33 @@ int main()
     e1.setNext(&e2);
 
     cout << head << endl;
+
+    Stack<int> stack;
+    stack.push(1);
+    stack.push(3);
+    cout << "Stack: " << stack << endl;
+    int v = stack.pop();
+    cout << "Popped: " << v << endl;
+    cout << "Stack: " << stack << endl;
+
+    stack.push(4);
+    cout << "Stack: " << stack << endl;
+
+    v = stack.pop();
+    cout << "Popped: " << v << endl;
+    cout << "Stack: " << stack << endl;
+
+    v = stack.pop();
+    cout << "Popped: " << v << endl;
+    cout << "Stack: " << stack << endl;
+
+    try
+    {
+        v = stack.pop();
+    }
+    catch (runtime_error e)
+    {
+        cout << "Trying to pop from empty stack: " << e.what() << endl;
+    }
+
 }
