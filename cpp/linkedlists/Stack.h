@@ -4,6 +4,7 @@
 #include "ListElement.h"
 
 #include <iostream>
+#include <memory>
 
 /**
 * This class manages a stack
@@ -23,7 +24,7 @@ class Stack
 
         void push(const T& value)
         {
-            auto e = new ListElement<T>(value);
+            auto e = std::make_shared<ListElement<T>>(value);
             if (isEmpty())
             {
                 m_head = e;
@@ -55,11 +56,10 @@ class Stack
             {
                 // set new tail
                 auto newTail = findPredecessor(tail);
+                // drop reference to old tail
                 newTail->setNext(nullptr);
             }
 
-            // delete old tail
-            delete tail;
             return result;
         }
 
@@ -89,12 +89,12 @@ class Stack
         }
 
     private:
-        ListElement<T>* findTail() const
+        std::shared_ptr<ListElement<T>> findTail() const
         {
             return findPredecessor(nullptr);
         }
 
-        ListElement<T>* findPredecessor(const ListElement<T>* elem) const
+        std::shared_ptr<ListElement<T>> findPredecessor(std::shared_ptr<ListElement<T>> elem) const
         {
             auto e = m_head;
             while (e->getNext() != elem && e->getNext()!=nullptr)
@@ -111,7 +111,7 @@ class Stack
             }
         }
         
-        ListElement<T> *m_head;
+        std::shared_ptr<ListElement<T>> m_head;
 };
 
 

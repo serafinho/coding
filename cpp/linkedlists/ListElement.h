@@ -2,6 +2,7 @@
 #define _LINKEDLIST_H__
 
 #include <iostream>
+#include <memory>
 
 /**
 * This class manages a linked list element
@@ -18,12 +19,12 @@ class ListElement
         {
         }
 
-        void setNext(ListElement* next)
+        void setNext(std::shared_ptr<ListElement> next)
         {
             m_next = next;
         }
            
-        ListElement* getNext() const
+        std::shared_ptr<ListElement> getNext() const
         {
             return m_next;
         }
@@ -39,7 +40,7 @@ class ListElement
         }
 
     private:
-        ListElement* m_next;
+        std::shared_ptr<ListElement> m_next;
         T m_value;
 };
 
