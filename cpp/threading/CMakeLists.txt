@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # set the project name
-project(Simple)
+project(Threading)
 
 # add the executable
-add_executable(Simple simple.cxx)
+add_executable(Threading threading.cxx)
