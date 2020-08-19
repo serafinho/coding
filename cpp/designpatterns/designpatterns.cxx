@@ -13,6 +13,8 @@ public:
     * Pure virtual method for visitor pattern
     */
     virtual void accept(Visitor &v) = 0;
+
+    virtual void decorated() = 0;
 };
 
 /**
@@ -36,6 +38,11 @@ public:
     {
         v.visit(*this);
     }
+
+    void decorated()
+    {
+        cout << "Normal function call on class A1...\n";
+    }
 };
 
 class A2 : public Base
@@ -45,6 +52,36 @@ public:
     {
         v.visit(*this);
     }
+
+    void decorated()
+    {
+        cout << "Normal function call on class A2...\n";
+    }
+};
+
+class Decorator : public Base
+{
+public:
+    Decorator(shared_ptr<Base> base) : m_base(base)
+    {
+    }
+
+    /**
+    * Decorator also implement Visitor pattern
+    */
+    void accept(Visitor& v) override
+    {
+        v.visit(*this);
+    }
+
+    void decorated() override 
+    {
+        m_base->decorated();
+        cout << "This is some decoration...\n";
+    }
+
+private:
+    shared_ptr<Base> m_base;
 };
 
 /**
@@ -106,10 +143,21 @@ int main()
     cout << "Demonstrating Design Patterns...\n";
     Visitor v;
 
+    // Factory
     auto a1 = App1::instance()->createA();
+    // Visitor
     a1->accept(v);
 
+    // Factory
     auto a2 = App2::instance()->createA();
+    // Visitor
     a2->accept(v);
+
+    // Decorator
+    auto decorator = new Decorator(a1);
+    decorator->decorated();
+    
+    // Visitor
+    decorator->accept(v);
 
 }
