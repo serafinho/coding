@@ -4,6 +4,8 @@
 #include <vector>
 #include <climits>
 
+#include "Philosopher.h"
+
 using namespace std;
 
 void asyncPrint100()
@@ -133,6 +135,49 @@ void producerConsumer()
 	print.join();
 }
 
+const int numPhil = 10;
+vector<int> forks(numPhil);
+vector<shared_ptr<Philosopher>> philosophers;
+vector<thread*> threads;
+
+void initDiningTable()
+{
+	for (int i = 0; i < numPhil; i++)
+	{
+		int leftFork = i;
+		int rightFork = i + 1;
+		if (rightFork >= numPhil)
+		{
+			rightFork = 0;
+		}
+		philosophers.push_back(make_shared<Philosopher>(i, leftFork, rightFork));
+		forks[i] = -1;
+	}
+}
+
+void startEating()
+{
+	for (int i = 0; i < numPhil; i++)
+	{
+		threads.push_back(new thread(&Philosopher::eat, philosophers[i], forks));
+	}
+}
+
+void waitUntilFinished()
+{
+	for (int i = 0; i < numPhil; i++)
+	{
+		threads[i]->join();
+	}
+}
+
+void diningPhilosophers()
+{
+	initDiningTable();
+	startEating();
+	waitUntilFinished();
+}
+
 int main()
 {
 	cout << "Running threading tests...\n";
@@ -141,5 +186,7 @@ int main()
 
 	//busyWaiting();
 
-	producerConsumer();
+	//producerConsumer();
+
+	diningPhilosophers();
 }
