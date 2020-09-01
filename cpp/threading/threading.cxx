@@ -4,7 +4,7 @@
 #include <vector>
 #include <climits>
 
-#include "Philosopher.h"
+//#include "Philosopher.h"
 
 using namespace std;
 
@@ -134,7 +134,7 @@ void producerConsumer()
 	cons.join();
 	print.join();
 }
-
+/*
 const int numPhil = 10;
 vector<int> forks(numPhil);
 vector<shared_ptr<Philosopher>> philosophers;
@@ -177,16 +177,16 @@ void diningPhilosophers()
 	startEating();
 	waitUntilFinished();
 }
-
+*/
 int main()
 {
 	cout << "Running threading tests...\n";
 
-	//simpleThreading();
+	simpleThreading();
 
 	//busyWaiting();
 
 	//producerConsumer();
 
-	diningPhilosophers();
+	//diningPhilosophers();
 }

@@ -43,6 +43,8 @@ void listTests() {
 
 	auto minMax = minmax_element(l.begin(), l.end());
 	cout << "Min/max: (" << *minMax.first << ", " << *minMax.second << ")" << endl;
+
+	cout << "Search 2: " << binary_search(l.begin(), l.end(), 1) << endl;
 }
 
 int main()

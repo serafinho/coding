@@ -25,7 +25,7 @@ class Philosopher
 {
 public:
 	
-	Philosopher(int id, int leftFork, int rightFork) :
+	Philosopher(int id, Fork &leftFork, Fork &rightFork) :
 		m_leftFork(leftFork), m_rightFork(rightFork), m_id(id), m_bites(0)
 	{
 	}
@@ -35,8 +35,8 @@ public:
 		while (m_bites<100)
 		{
 //			forkMutex.lock();
-			forks[m_leftFork] = m_id;
-			forks[m_rightFork] = m_id;
+		//	forks[m_leftFork] = m_id;
+	//		forks[m_rightFork] = m_id;
 			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 			printStatus();
 //			forkMutex.unlock();
@@ -56,9 +56,9 @@ private:
 	int m_id;
 	int m_bites;
 	std::thread worker;
-	Table const& m_table;
+//	Table const& m_table;
 };
 
-std::mutex Philosopher::forkMutex;
+//std::mutex Philosopher::forkMutex;
 
 #endif
