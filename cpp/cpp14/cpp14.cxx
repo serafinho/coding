@@ -2,6 +2,7 @@
 #include <list>
 #include <algorithm>
 #include <numeric>
+#include <vector>
 
 using namespace std;
 
@@ -26,11 +27,17 @@ void printList(const list<int>& l) {
 	cout << endl;
 }
 
+void printVector(const vector<int>& v) {
+	for_each(v.begin(), v.end(), [](int e) { cout << e << " "; });
+	cout << endl;
+}
+
 void listTests() {
 	list <int> l;
 	l.push_back(1);
 	l.push_front(2);
 	l.push_front(3);
+	l.push_back(3);
 	printList(l);
 
 	l.sort();
@@ -44,7 +51,40 @@ void listTests() {
 	auto minMax = minmax_element(l.begin(), l.end());
 	cout << "Min/max: (" << *minMax.first << ", " << *minMax.second << ")" << endl;
 
-	cout << "Search 2: " << binary_search(l.begin(), l.end(), 1) << endl;
+	cout << "Count 3s: " << count(l.begin(), l.end(), 3) << endl;	
+
+	printList(l);
+	cout << "Lower bound 2: " << *lower_bound(l.begin(), l.end(), 1) << endl;	
+
+	cout << "All of >0? " << any_of(l.begin(), l.end(), [](int x) { return x>0;}) << endl;
+	cout << "Any of %2? " << any_of(l.begin(), l.end(), [](int x) { return x%2;}) << endl;
+	cout << "None of <0? " << none_of(l.begin(), l.end(), [](int x) { return x<0;}) << endl;
+
+	vector<int> v(10);
+	iota(v.begin(), v.end(), -1);
+	printVector(v);
+
+	vector<int> v2(8);
+	copy_n(v.begin(), 8, v2.begin());
+	printVector(v2);
+
+	cout << "Binary Search 2: " << binary_search(v.begin(), v.end(), 2) << endl;
+
+	auto it = find(v.begin(), v.end(), 3);
+	cout << "Find 3: " << *it << endl;	
+
+	partition(v.begin(), v.end(), [](int x) { return x%2;});
+	cout << "Partition: ";
+	printVector(v);
+
+	stable_partition(v2.begin(), v2.end(), [](int x) { return x%2;});
+	cout << "Stable partition: ";
+	printVector(v2);
+
+	auto point = partition_point(v2.begin(), v2.end(), [](int x) { return x%2;});
+	cout << "Partition point: " << *point << endl;
+
+
 }
 
 int main()
