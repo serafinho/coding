@@ -11,7 +11,7 @@ class Philosopher
 public:
 	
 	Philosopher(int id, int leftFork, int rightFork) :
-		m_id(id), m_leftFork(leftFork), m_rightFork(rightFork), m_bites(0)
+		m_leftFork(leftFork), m_rightFork(rightFork), m_id(id), m_bites(0)
 	{
 	}
 

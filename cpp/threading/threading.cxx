@@ -73,14 +73,14 @@ void busyWaiting()
 
 // Demonstrate producer/consumer
 vector<int> buffer(32);
-size_t index = 0;
+size_t my_index = 0;
 mutex mutti;
 void printBuffer()
 {
 	while (true)
 	{
 		mutti.lock();
-		for (int i = 0; i < index; i++)
+		for (int i = 0; i < my_index; i++)
 		{
 			cout << buffer[i] << ", ";
 		}
@@ -96,11 +96,11 @@ void producer()
 	while (true)
 	{
 		mutti.lock();
-		if (index < buffer.size()-1)
+		if (my_index < buffer.size()-1)
 		{			
-			buffer[index] = value;
-			cout << "Pushing: " << buffer[index] << endl;
-			index++;
+			buffer[my_index] = value;
+			cout << "Pushing: " << buffer[my_index] << endl;
+			my_index++;
 			value = (value >= INT_MAX) ? 0 : value + 1;
 		}
 		mutti.unlock();
@@ -114,10 +114,10 @@ void consumer()
 	while (true)
 	{
 		mutti.lock();
-		if (index>0)
+		if (my_index>0)
 		{
-			index--;
-			cout << "Popping: " << buffer[index] << endl;
+			my_index--;
+			cout << "Popping: " << buffer[my_index] << endl;
 		}
 		mutti.unlock();
 		this_thread::sleep_for(chrono::milliseconds(1));
@@ -159,7 +159,7 @@ void startEating()
 {
 	for (int i = 0; i < numPhil; i++)
 	{
-		threads.push_back(new thread(&Philosopher::eat, philosophers[i], forks));
+//		threads.push_back(new thread(&Philosopher::eat, philosophers[i], forks));
 	}
 }
 

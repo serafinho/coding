@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 
 /**
 * This class manages a stack
@@ -40,7 +41,7 @@ class Stack
         {
             if (isEmpty())
             {
-                throw runtime_error("Stack is empty");
+                throw std::runtime_error("Stack is empty");
             }
             // find tail and get its value to be returned
             auto tail = findTail();
@@ -107,7 +108,7 @@ class Stack
             }
             else
             {
-                throw logic_error("Internal error: Element not in list");
+                throw std::logic_error("Internal error: Element not in list");
             }
         }
         
