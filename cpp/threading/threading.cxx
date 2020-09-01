@@ -72,7 +72,7 @@ void busyWaiting()
 
 
 // Demonstrate producer/consumer
-vector<int> buffer(32);
+array<int, 32> buffer;
 size_t index = 0;
 mutex mutti;
 void printBuffer()

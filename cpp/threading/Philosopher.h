@@ -5,6 +5,21 @@
 #include <vector>
 #include <thread>
 #include <mutex>
+#include <array>
+
+constexpr int no_of_philosophers = 5;
+
+struct Fork
+{
+	std::mutex mutex;
+};
+
+
+struct Table
+{
+	std::atomic<bool> ready{ false };
+	std::array<Fork, no_of_philosophers> forks;
+};
 
 class Philosopher
 {
@@ -19,13 +34,13 @@ public:
 	{
 		while (m_bites<100)
 		{
-			forkMutex.lock();
+//			forkMutex.lock();
 			forks[m_leftFork] = m_id;
 			forks[m_rightFork] = m_id;
-			forkMutex.unlock();
-			m_bites++;
+			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 			printStatus();
-			std::this_thread::sleep_for(std::chrono::milliseconds(1));
+//			forkMutex.unlock();
+			m_bites++;
 		}
 		std::cout << "************ Philosopher " << m_id << " finished!\n";
 	}
@@ -36,11 +51,12 @@ private:
 		std::cout << "Philosopher " << m_id << ", Bites: " << m_bites << std::endl;
 	}
 
-	int m_leftFork;
-	int m_rightFork;
+	Fork& m_leftFork;
+	Fork& m_rightFork;
 	int m_id;
 	int m_bites;
-	static std::mutex forkMutex;
+	std::thread worker;
+	Table const& m_table;
 };
 
 std::mutex Philosopher::forkMutex;
