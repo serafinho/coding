@@ -87,11 +87,39 @@ void listTests() {
 
 }
 
+void print(vector<int> &v) {
+    for_each(v.begin(), v.end(), [](int x) { cout << x << " ";});
+    cout << endl;
+}
+
+void createSequences(int n, int k) {
+    if(n==1) {
+        cout << 1 << endl;
+        return;
+    }
+    
+    for(int i=1; i<n; i++) {
+        if(i<=k) {
+            cout << i;        
+        }
+        createSequences(n-i, k);
+        cout << endl;
+    }
+}
+
+vector<vector<int>> climbingStaircase(int n, int k) {
+    createSequences(n, k);
+    vector<vector<int>> result;
+    return result;
+}
+
 int main()
 {
 	cout << "Some simple Cpp14 tests...\n";
 
-	simpleTests();
+	//simpleTests();
 
-	listTests();
+	//listTests();
+
+	climbingStaircase(5, 2);
 }
