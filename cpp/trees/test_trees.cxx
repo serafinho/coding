@@ -15,7 +15,7 @@ void print(Node<int> *root) {
     if(root->children.empty()) {
         return;
     }
-    
+
     for(auto c:root->children) {
         cout << c->value << " ";
     }
@@ -25,7 +25,7 @@ void print(Node<int> *root) {
     }
 }
 
-void climbingStairs(Node<int> *root, const int k) {
+void buildTree(Node<int> *root, const int k) {
     auto n = root->value;
     if(n==1) {
         return;
@@ -40,15 +40,18 @@ void climbingStairs(Node<int> *root, const int k) {
     }
 
     for(auto c : root->children) {
-        climbingStairs(c, k-1);
+        buildTree(c, k-1);
     }
+}
+
+void climbingStairs(const int n, const int k) {
+    Node<int> *root = new Node<int>(n);
+    buildTree(root, k);
+    print(root);
 }
 
 int main()
 {
     cout << "Testing trees...\n";
-    Node<int> *root = new Node<int>(5);
-    climbingStairs(root, 2);
-
-    print(root);
+    climbingStairs(5, 2);
 }
