@@ -1,7 +1,7 @@
 #include <memory>
 #include <iostream>
 #include <numeric> // for accumulate
-
+#include <vector>
 
 using namespace std;
 
@@ -140,6 +140,91 @@ void autoDecl()
     cout << "Auto: " << add(1.2, 1.8) << endl; // == 3.0
 }
 
+/*!
+ Lambda: Unnamed function objects
+ */
+void lambdaFunctions()
+{
+    int x = 4;
+
+    auto getX = [=] { return x; };
+    cout << "X: " << getX() << endl;
+
+    auto addX = [=](int y) { return x + y; };
+    cout << "Sum: " << addX(1) << endl;
+    
+    auto getXRef = [&]() -> int& { return x; };
+    cout << "XRef: " << getXRef() << endl; // int& to `x`
+    
+    auto f1 = [&x] { x = 999; }; // OK: x is a reference and modifies the original
+    f1();
+    cout << "Modified: " << x << endl;
+}
+
+/*
+ decltype: declared type of expression
+ */
+class A
+{
+};
+
+class B :public A
+{
+};
+
+void decltypes()
+{
+    int x = 123;
+    decltype(x) y = 1.23;
+    
+    cout << "y = " << y << endl;
+    
+    auto a = new A();
+    decltype(a) b = new B();
+    cout << b << endl;
+}
+
+/*!
+ Type Aliases: Similar to typedef
+ */
+void txpeAliases()
+{
+    using IntVec = vector<int>;
+    IntVec v; // std::vector<int>
+    v.push_back(123);
+    
+    using String = std::string;
+    String s {"foo"};
+}
+
+/*!
+ nullptr: New type that cannot be converted to integral types except bool
+ */
+void foo(int x)
+{
+    cout << "Wham" << endl;
+}
+void foo(char* x)
+{
+    if(!x)
+    {
+        cout << "Bim!" << endl;
+    }
+    else
+    {
+        cout << "Bam!" << endl;
+    }
+}
+
+void nullptrType()
+{
+    // ambiguous
+    // foo(NULL);
+    foo(nullptr);
+    foo('a');
+    foo((char*)'a');
+}
+
 int main()
 {
     moveSematics();
@@ -148,4 +233,7 @@ int main()
     forwardReferences();
     initializerLists();
     autoDecl();
+    lambdaFunctions();
+    decltypes();
+    nullptrType();
 }
