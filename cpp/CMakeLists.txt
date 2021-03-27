@@ -6,6 +6,7 @@ project(Coding)
 SET(CMAKE_BUILD_TYPE Debug)
 add_compile_options(-std=c++17 -Wall)
 
+add_subdirectory (cppFeatures)
 add_subdirectory (simple)
 add_subdirectory (factorial)
 add_subdirectory (linkedlists)

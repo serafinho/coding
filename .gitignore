@@ -1,9 +1,4 @@
 cpp/build/
-cpp/cpp14/cpp14.dSYM/
-cpp/cpp14/cpp14
-cpp/threading/threading.dSYM/
-cpp/threading/threading
 **/.vscode/
-cpp/trees/test_trees.dSYM/
 **/.DS_Store
-cpp/trees/test_trees
+

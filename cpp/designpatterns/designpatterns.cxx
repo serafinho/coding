@@ -39,7 +39,7 @@ public:
         v.visit(*this);
     }
 
-    void decorated()
+    void decorated() override
     {
         cout << "Normal function call on class A1...\n";
     }
