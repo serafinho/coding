@@ -9,6 +9,7 @@ class Visitor;
 class Base 
 {
 public:
+    virtual ~Base() {}
     /**
     * Pure virtual method for visitor pattern
     */
@@ -53,7 +54,7 @@ public:
         v.visit(*this);
     }
 
-    void decorated()
+    void decorated() override
     {
         cout << "Normal function call on class A2...\n";
     }
