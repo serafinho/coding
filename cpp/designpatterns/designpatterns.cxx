@@ -27,7 +27,7 @@ public:
     void visit(Base& b)
     {
         // This could be anything...
-        cout << "Visiting: " << typeid(b).name() << endl;
+        cout << "Visiting class with name: " << typeid(b).name() << endl;
     }
 };
 
@@ -147,6 +147,58 @@ private:
 App2* App2::m_instance = nullptr;
 
 
+class IStrategy
+{
+public:
+    virtual void func() = 0;
+};
+
+class StrategyA : public IStrategy
+{
+public:
+    void func() override
+    {
+        std::cout << "Strategy A\n";
+    }
+};
+
+class StrategyB : public IStrategy
+{
+public:
+    void func() override
+    {
+        std::cout << "Strategy B\n";
+    }
+};
+
+class Strategy
+{
+public:
+    Strategy() : m_strat(nullptr)
+    {
+        
+    }
+    
+    void setStrategy(std::shared_ptr<IStrategy> s)
+    {
+        m_strat = s;
+    }
+    
+    void performFunc()
+    {
+        if(m_strat)
+        {
+            m_strat->func();
+        }
+        else
+        {
+            cout << "No strategy...\n";
+        }
+    }
+private:
+    std::shared_ptr<IStrategy> m_strat;
+};
+
 int main()
 {
     cout << "Demonstrating Design Patterns...\n";
@@ -162,12 +214,21 @@ int main()
     auto a2 = f.create(Factory::Type_A2);
     // Visitor
     a2->accept(v);
-
+    
+    // Strategy
+    Strategy s;
+    s.performFunc();
+    auto s_b = make_shared<StrategyB>();
+    s.setStrategy(s_b);
+    s.performFunc();
+    
     // Decorator
     auto decorator = new Decorator(a1);
     decorator->decorated();
     
     // Visitor
     decorator->accept(v);
+    
+    cout << "Done.\n";
 
 }
