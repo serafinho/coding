@@ -85,8 +85,25 @@ private:
     shared_ptr<Base> m_base;
 };
 
+class Factory
+{
+public:
+    enum Type {Type_A1, Type_A2};
+    std::shared_ptr<Base> create(Type t)
+    {
+        switch(t) {
+            case Type_A1:
+                return std::make_shared<A1>();
+            case Type_A2:
+                return std::make_shared<A2>();
+            default:
+                throw runtime_error("Invalid enum in factory call");
+        }
+    }
+};
+
 /**
-* Main class implementing the Factory and Singleton patterns
+* Main class implementing  and Singleton patterns
 */
 class App1
 {
@@ -100,10 +117,6 @@ public:
         return m_instance;
     }
 
-    virtual shared_ptr<Base> createA()
-    {
-        return make_shared<A1>();
-    }
 protected:
     App1() {}
 
@@ -114,7 +127,7 @@ private:
 App1* App1::m_instance = nullptr;
 
 /**
-* Another main class implementing the Factory and Singleton patterns
+* Another main class implementing the  Singleton pattern
 */
 class App2
 {
@@ -126,11 +139,6 @@ public:
             m_instance = new App2();
         }
         return m_instance;
-    }
-
-    virtual shared_ptr<Base> createA()
-    {
-        return make_shared<A2>();
     }
 
 private:
@@ -145,12 +153,13 @@ int main()
     Visitor v;
 
     // Factory
-    auto a1 = App1::instance()->createA();
+    Factory f;
+    auto a1 = f.create(Factory::Type_A1);
     // Visitor
     a1->accept(v);
 
     // Factory
-    auto a2 = App2::instance()->createA();
+    auto a2 = f.create(Factory::Type_A2);
     // Visitor
     a2->accept(v);
 

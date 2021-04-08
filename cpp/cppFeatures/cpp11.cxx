@@ -2,6 +2,7 @@
 #include <iostream>
 #include <numeric> // for accumulate
 #include <vector>
+#include <exception>
 
 using namespace std;
 
@@ -225,6 +226,48 @@ void nullptrType()
     foo((char*)'a');
 }
 
+void stronglyTypedEnums()
+{
+    // Specifying underlying type as `unsigned int`
+    enum class Color : unsigned int { Red = 0xff0000, Green = 0xff00, Blue = 0xff };
+    // `Red`/`Green` in `Alert` don't conflict with `Color`
+    enum class Alert : bool { Red, Green };
+    Color c = Color::Red;
+    cout << "C: " << (unsigned int)c << endl;
+}
+
+// `noreturn` attribute indicates `f` doesn't return.
+[[ noreturn ]] void attributes() {
+  throw runtime_error("error");
+}
+
+struct Complex {
+  constexpr Complex(double r, double i) : re{r}, im{i} { }
+  constexpr double real() { return re; }
+  constexpr double imag() { return im; }
+
+  double re;
+  double im;
+};
+
+void constantExpressions()
+{
+    constexpr Complex I(123, 1);
+    cout << "Complex: " << I.re << endl;
+}
+
+struct Foo {
+  int foo;
+  Foo(int foo) : foo{foo} {}
+  Foo() : Foo(123) {}
+};
+
+void delegationConstructors()
+{
+    Foo foo;
+    cout << "Foo: " << foo.foo << endl;
+}
+
 int main()
 {
     moveSematics();
@@ -236,4 +279,15 @@ int main()
     lambdaFunctions();
     decltypes();
     nullptrType();
+    stronglyTypedEnums();
+    try {
+        attributes();
+    }
+    catch(exception &e)
+    {
+        cout << "Caught: " << e.what() << endl;
+    }
+    
+    constantExpressions();
+    delegationConstructors();
 }

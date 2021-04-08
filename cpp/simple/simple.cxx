@@ -3,6 +3,8 @@
 #include <sstream>
 #include <exception>
 #include <list>
+#include <vector>
+#include <stack>
 
 using namespace std;
 
@@ -11,25 +13,25 @@ using namespace std;
  */
 void runFizzBuzz()
 {
-    for(int i=0; i<100; i++)
+    for(int i=1; i<100; i++)
     {
-        bool div3 = (i%3==0);
-        bool div5 = (i%5==0);
+        auto div3 = (i%3==0);
+        auto div5 = (i%5==0);
         
-        string result = to_string(i);
-        if(div3 && div5)
+        stringstream result;
+        if(div3)
         {
-            result = "FizzBuzz";
+            result << "Fizz";
         }
-        else if(div3)
+        if(div5)
         {
-            result = "Fizz";
+            result << "Buzz";
         }
-        else if(div5)
+        if(!div3 && !div5)
         {
-            result = "Buzz";
+            result << i;
         }
-        cout << result << endl;
+        cout << result.str() << endl;
     }
 }
 
@@ -39,7 +41,7 @@ void runFizzBuzz()
 string reverseString(const string& input)
 {
     const size_t length  = input.length();
-    stringstream out; 
+    stringstream out;
     for(size_t i=0; i<length; i++)
     {
         out << input.at(length-i-1);
@@ -51,13 +53,19 @@ string reverseString(const string& input)
 /** 
 * Print a list
 */
-void printList(const list<int>& l)
+template<class T>
+void printList(const T& l)
 {
-    for (auto const& elem : l)
+    stringstream s;
+    
+    s << "[";
+    for (const auto &e: l)
     {
-        cout << elem << ", ";
+        s << e << ", ";
     }
-    cout << endl;
+    s.seekp(-2, ios_base::end);
+    s << "]";
+    cout << s.str() << endl;
 }
 
 /**
@@ -99,15 +107,28 @@ bool parenthesesCorrect(const string& input)
     return counter == 0;
 }
 
+void vectorError()
+{
+    vector<int> v {1, 2, 3, 4};
+    auto size = v.size();
+    for(int i=0; i<size; i++)
+    {
+        v.push_back(v[i]*v[i]);
+    }
+    printList(v);
+}
+
 int main()
 {
 
+    vectorError();
+    
     runFizzBuzz();
 
     const string inputString = "HonkyDoodle";
     cout << inputString << " reversed: " << reverseString(inputString) << endl;
 
-    list<int> input = { 1, 2, 3, 4, 1, 3, 5, 2, 2, 1, 5, 8, 1 };
+    list<int> input { 1, 2, 3, 4, 1, 3, 5, 2, 2, 1, 5, 8, 1 };
     cout << "Input: ";
     printList(input);
 
@@ -121,4 +142,5 @@ int main()
     cout << "Checking " << s1 << ": " << parenthesesCorrect(s1) << endl;
     cout << "Checking " << s2 << ": " << parenthesesCorrect(s2) << endl;
     cout << "Checking " << s3 << ": " << parenthesesCorrect(s3) << endl;
+ 
 }

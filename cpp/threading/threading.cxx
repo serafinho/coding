@@ -75,9 +75,10 @@ void busyWaiting()
 vector<int> buffer(32);
 size_t my_index = 0;
 mutex mutti;
+bool prodRunning = true;
 void printBuffer()
 {
-	while (true)
+	while (prodRunning)
 	{
 		mutti.lock();
 		for (int i = 0; i < my_index; i++)
@@ -92,8 +93,10 @@ void printBuffer()
 
 void producer()
 {
+    prodRunning = true;
 	int value = 0;
-	while (true)
+    
+    for(int i=0; i<10000; i++)
 	{
 		mutti.lock();
 		if (my_index < buffer.size()-1)
@@ -104,23 +107,30 @@ void producer()
 			value = (value >= INT_MAX) ? 0 : value + 1;
 		}
 		mutti.unlock();
-		this_thread::sleep_for(chrono::milliseconds(1));
-
+//		this_thread::sleep_for(chrono::milliseconds(1));
+        this_thread::yield();
 	}
+    prodRunning = false;
 }
 
 void consumer()
 {
-	while (true)
+	while (prodRunning || my_index>0)
 	{
 		mutti.lock();
 		if (my_index>0)
 		{
 			my_index--;
 			cout << "Popping: " << buffer[my_index] << endl;
+            mutti.unlock();
+            this_thread::yield();
 		}
-		mutti.unlock();
-		this_thread::sleep_for(chrono::milliseconds(1));
+        else
+        {
+            cout << "Empty..." << endl;
+            mutti.unlock();
+            this_thread::sleep_for(chrono::milliseconds(1));
+        }
 	}
 }
 
@@ -133,60 +143,18 @@ void producerConsumer()
 	prod.join();
 	cons.join();
 	print.join();
-}
-/*
-const int numPhil = 10;
-vector<int> forks(numPhil);
-vector<shared_ptr<Philosopher>> philosophers;
-vector<thread*> threads;
-
-void initDiningTable()
-{
-	for (int i = 0; i < numPhil; i++)
-	{
-		int leftFork = i;
-		int rightFork = i + 1;
-		if (rightFork >= numPhil)
-		{
-			rightFork = 0;
-		}
-		philosophers.push_back(make_shared<Philosopher>(i, leftFork, rightFork));
-		forks[i] = -1;
-	}
+    cout << "Done." << endl;
 }
 
-void startEating()
-{
-	for (int i = 0; i < numPhil; i++)
-	{
-//		threads.push_back(new thread(&Philosopher::eat, philosophers[i], forks));
-	}
-}
-
-void waitUntilFinished()
-{
-	for (int i = 0; i < numPhil; i++)
-	{
-		threads[i]->join();
-	}
-}
-
-void diningPhilosophers()
-{
-	initDiningTable();
-	startEating();
-	waitUntilFinished();
-}
-*/
 int main()
 {
 	cout << "Running threading tests...\n";
 
 	simpleThreading();
 
-	//busyWaiting();
+	busyWaiting();
 
-	//producerConsumer();
+	producerConsumer();
 
 	//diningPhilosophers();
 }
