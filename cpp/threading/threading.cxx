@@ -1,7 +1,7 @@
 #include <iostream>
 #include <future>
 #include <thread>
-#include <vector>
+#include <queue>
 #include <climits>
 
 //#include "Philosopher.h"
@@ -72,22 +72,32 @@ void busyWaiting()
 
 
 // Demonstrate producer/consumer
-vector<int> buffer(32);
-size_t my_index = 0;
-mutex mutti;
-bool prodRunning = true;
-void printBuffer()
+
+// store values in queue
+queue<int> buffer;
+
+// mutex to protect critical sections
+mutex cv_m;
+
+// flag to tell other threads when to stop
+atomic<bool> prodRunning = true;
+
+// condition variable
+condition_variable cv;
+
+/*
+ Print queue
+ */
+void printQueue()
 {
 	while (prodRunning)
 	{
-		mutti.lock();
-		for (int i = 0; i < my_index; i++)
-		{
-			cout << buffer[i] << ", ";
-		}
-		cout << "\n*********************************************************\n";
-		mutti.unlock();
-		this_thread::sleep_for(chrono::milliseconds(1000));
+        {
+            // critical section
+            lock_guard<mutex> lk(cv_m);
+            cout << "***** Queue size: " << buffer.size() << endl;
+        }
+        this_thread::sleep_for(chrono::milliseconds(10));
 	}
 }
 
@@ -95,41 +105,46 @@ void producer()
 {
     prodRunning = true;
 	int value = 0;
-    
+
     for(int i=0; i<10000; i++)
 	{
-		mutti.lock();
-		if (my_index < buffer.size()-1)
-		{			
-			buffer[my_index] = value;
-			cout << "Pushing: " << buffer[my_index] << endl;
-			my_index++;
-			value = (value >= INT_MAX) ? 0 : value + 1;
-		}
-		mutti.unlock();
-//		this_thread::sleep_for(chrono::milliseconds(1));
-        this_thread::yield();
+        {
+            // critical section
+            lock_guard lk(cv_m);
+            buffer.push(value);
+            cout << "Pushing: " << value << endl;
+        }
+        // notify waiting threads
+        cv.notify_all();
+        
+        // new value
+        value = (value >= INT_MAX) ? 0 : value + 1;
+        
+        // just wait a little before pushing next value
+		this_thread::sleep_for(chrono::milliseconds(1));
 	}
     prodRunning = false;
+    
+    // wake up threads for final processing
+    cv.notify_all();
 }
 
 void consumer()
 {
-	while (prodRunning || my_index>0)
+    unique_lock<mutex> lk(cv_m);
+	while (prodRunning)
 	{
-		mutti.lock();
-		if (my_index>0)
-		{
-			my_index--;
-			cout << "Popping: " << buffer[my_index] << endl;
-            mutti.unlock();
-            this_thread::yield();
-		}
+        // wait for notification from producer
+        cv.wait(lk);
+        
+        if(!buffer.empty())
+        {
+            cout << "Popping: " << buffer.front() << endl;
+            buffer.pop();
+        }
         else
         {
             cout << "Empty..." << endl;
-            mutti.unlock();
-            this_thread::sleep_for(chrono::milliseconds(1));
         }
 	}
 }
@@ -139,7 +154,7 @@ void producerConsumer()
 {
 	thread prod(producer);
 	thread cons(consumer);
-	thread print(printBuffer);
+	thread print(printQueue);
 	prod.join();
 	cons.join();
 	print.join();
@@ -150,9 +165,9 @@ int main()
 {
 	cout << "Running threading tests...\n";
 
-	simpleThreading();
+//	simpleThreading();
 
-	busyWaiting();
+//	busyWaiting();
 
 	producerConsumer();
 
